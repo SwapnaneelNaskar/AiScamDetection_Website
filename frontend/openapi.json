@@ -1,0 +1,730 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "AI Scam Detector for Messages & Websites",
+    "description": "Cybersecurity intelligence system for detecting phishing, scams, and malicious URLs.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/analyze": {
+      "post": {
+        "summary": "Analyze Input",
+        "operationId": "analyze_input_api_analyze_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnalyzeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnalyzeResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ocr": {
+      "post": {
+        "summary": "Process Ocr Upload",
+        "description": "Accepts uploaded screenshot and attempts text extraction.",
+        "operationId": "process_ocr_upload_api_ocr_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_process_ocr_upload_api_ocr_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/history": {
+      "get": {
+        "summary": "List History",
+        "operationId": "list_history_api_history_get",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/HistoryItem"
+                  },
+                  "title": "Response List History Api History Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Clear History",
+        "operationId": "clear_history_api_history_delete",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/history/{scan_id}": {
+      "get": {
+        "summary": "Get History Detail",
+        "operationId": "get_history_detail_api_history__scan_id__get",
+        "parameters": [
+          {
+            "name": "scan_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Scan Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remove History Item",
+        "operationId": "remove_history_item_api_history__scan_id__delete",
+        "parameters": [
+          {
+            "name": "scan_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Scan Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/stats": {
+      "get": {
+        "summary": "Get Dashboard Stats",
+        "operationId": "get_dashboard_stats_api_stats_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/metrics": {
+      "get": {
+        "summary": "Get Metrics",
+        "operationId": "get_metrics_api_metrics_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelMetricsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/presets": {
+      "get": {
+        "summary": "Get Presets",
+        "operationId": "get_presets_api_presets_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "summary": "Serve Index",
+        "operationId": "serve_index__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AnalyzeRequest": {
+        "properties": {
+          "text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Text",
+            "description": "The suspicious message, email, or extracted OCR text",
+            "default": ""
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url",
+            "description": "Website URL to analyze",
+            "default": ""
+          },
+          "input_type": {
+            "type": "string",
+            "title": "Input Type",
+            "description": "'message', 'url', or 'screenshot'",
+            "default": "message"
+          }
+        },
+        "type": "object",
+        "title": "AnalyzeRequest"
+      },
+      "AnalyzeResponse": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id"
+          },
+          "input_type": {
+            "type": "string",
+            "title": "Input Type"
+          },
+          "input_snippet": {
+            "type": "string",
+            "title": "Input Snippet"
+          },
+          "risk_score": {
+            "type": "integer",
+            "title": "Risk Score"
+          },
+          "risk_level": {
+            "type": "string",
+            "title": "Risk Level"
+          },
+          "primary_category": {
+            "type": "string",
+            "title": "Primary Category"
+          },
+          "is_scam": {
+            "type": "boolean",
+            "title": "Is Scam"
+          },
+          "ml_scam_probability": {
+            "type": "number",
+            "title": "Ml Scam Probability"
+          },
+          "ml_confidence_label": {
+            "type": "string",
+            "title": "Ml Confidence Label"
+          },
+          "detected_indicators": {
+            "items": {
+              "$ref": "#/components/schemas/IndicatorItem"
+            },
+            "type": "array",
+            "title": "Detected Indicators"
+          },
+          "url_analysis": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/URLAnalysisResult"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "safety_recommendations": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Safety Recommendations"
+          },
+          "summary_explanation": {
+            "type": "string",
+            "title": "Summary Explanation"
+          },
+          "viva_summary": {
+            "type": "string",
+            "title": "Viva Summary"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "input_type",
+          "input_snippet",
+          "risk_score",
+          "risk_level",
+          "primary_category",
+          "is_scam",
+          "ml_scam_probability",
+          "ml_confidence_label",
+          "detected_indicators",
+          "safety_recommendations",
+          "summary_explanation",
+          "viva_summary",
+          "created_at"
+        ],
+        "title": "AnalyzeResponse"
+      },
+      "Body_process_ocr_upload_api_ocr_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "contentMediaType": "application/octet-stream",
+            "title": "File"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_process_ocr_upload_api_ocr_post"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "HistoryItem": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "input_type": {
+            "type": "string",
+            "title": "Input Type"
+          },
+          "snippet": {
+            "type": "string",
+            "title": "Snippet"
+          },
+          "risk_score": {
+            "type": "integer",
+            "title": "Risk Score"
+          },
+          "risk_level": {
+            "type": "string",
+            "title": "Risk Level"
+          },
+          "primary_category": {
+            "type": "string",
+            "title": "Primary Category"
+          },
+          "indicators_count": {
+            "type": "integer",
+            "title": "Indicators Count"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "input_type",
+          "snippet",
+          "risk_score",
+          "risk_level",
+          "primary_category",
+          "indicators_count",
+          "created_at"
+        ],
+        "title": "HistoryItem"
+      },
+      "IndicatorItem": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category"
+          },
+          "severity": {
+            "type": "string",
+            "title": "Severity"
+          },
+          "score_impact": {
+            "type": "integer",
+            "title": "Score Impact"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "evidence": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Evidence"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "category",
+          "severity",
+          "score_impact",
+          "description",
+          "evidence"
+        ],
+        "title": "IndicatorItem"
+      },
+      "ModelBenchmarkItem": {
+        "properties": {
+          "model_name": {
+            "type": "string",
+            "title": "Model Name"
+          },
+          "accuracy": {
+            "type": "number",
+            "title": "Accuracy"
+          },
+          "precision": {
+            "type": "number",
+            "title": "Precision"
+          },
+          "recall": {
+            "type": "number",
+            "title": "Recall"
+          },
+          "f1_score": {
+            "type": "number",
+            "title": "F1 Score"
+          }
+        },
+        "type": "object",
+        "required": [
+          "model_name",
+          "accuracy",
+          "precision",
+          "recall",
+          "f1_score"
+        ],
+        "title": "ModelBenchmarkItem"
+      },
+      "ModelMetricsResponse": {
+        "properties": {
+          "active_model": {
+            "type": "string",
+            "title": "Active Model"
+          },
+          "total_samples": {
+            "type": "integer",
+            "title": "Total Samples"
+          },
+          "test_split_ratio": {
+            "type": "number",
+            "title": "Test Split Ratio"
+          },
+          "benchmark": {
+            "items": {
+              "$ref": "#/components/schemas/ModelBenchmarkItem"
+            },
+            "type": "array",
+            "title": "Benchmark"
+          },
+          "confusion_matrix": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "Confusion Matrix"
+          }
+        },
+        "type": "object",
+        "required": [
+          "active_model",
+          "total_samples",
+          "test_split_ratio",
+          "benchmark",
+          "confusion_matrix"
+        ],
+        "title": "ModelMetricsResponse"
+      },
+      "URLAnalysisResult": {
+        "properties": {
+          "url": {
+            "type": "string",
+            "title": "Url"
+          },
+          "is_valid": {
+            "type": "boolean",
+            "title": "Is Valid"
+          },
+          "domain": {
+            "type": "string",
+            "title": "Domain"
+          },
+          "tld": {
+            "type": "string",
+            "title": "Tld"
+          },
+          "is_ip_address": {
+            "type": "boolean",
+            "title": "Is Ip Address"
+          },
+          "is_shortened": {
+            "type": "boolean",
+            "title": "Is Shortened"
+          },
+          "suspicious_tld": {
+            "type": "boolean",
+            "title": "Suspicious Tld"
+          },
+          "domain_entropy": {
+            "type": "number",
+            "title": "Domain Entropy"
+          },
+          "uses_https": {
+            "type": "boolean",
+            "title": "Uses Https"
+          },
+          "https_notice": {
+            "type": "string",
+            "title": "Https Notice"
+          },
+          "suspicious_keywords": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Suspicious Keywords"
+          },
+          "url_risk_score": {
+            "type": "integer",
+            "title": "Url Risk Score"
+          },
+          "flags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Flags"
+          }
+        },
+        "type": "object",
+        "required": [
+          "url",
+          "is_valid",
+          "domain",
+          "tld",
+          "is_ip_address",
+          "is_shortened",
+          "suspicious_tld",
+          "domain_entropy",
+          "uses_https",
+          "https_notice",
+          "suspicious_keywords",
+          "url_risk_score",
+          "flags"
+        ],
+        "title": "URLAnalysisResult"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

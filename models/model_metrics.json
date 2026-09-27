@@ -1,0 +1,41 @@
+{
+  "active_model": "Logistic Regression (TF-IDF)",
+  "total_samples": 303,
+  "test_split_ratio": 0.25,
+  "benchmark": [
+    {
+      "model_name": "Multinomial Naive Bayes",
+      "accuracy": 97.37,
+      "precision": 97.92,
+      "recall": 97.92,
+      "f1_score": 97.92
+    },
+    {
+      "model_name": "Logistic Regression",
+      "accuracy": 98.68,
+      "precision": 97.96,
+      "recall": 100.0,
+      "f1_score": 98.97
+    },
+    {
+      "model_name": "Linear SVM",
+      "accuracy": 98.68,
+      "precision": 97.96,
+      "recall": 100.0,
+      "f1_score": 98.97
+    },
+    {
+      "model_name": "Random Forest",
+      "accuracy": 97.37,
+      "precision": 96.0,
+      "recall": 100.0,
+      "f1_score": 97.96
+    }
+  ],
+  "confusion_matrix": {
+    "true_negative": 27,
+    "false_positive": 1,
+    "false_negative": 0,
+    "true_positive": 48
+  }
+}

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Scam Detector — Interactive Swagger UI API Docs</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome 6 Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Swagger UI CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Custom dark styling for Swagger UI standalone page */
+        body {
+            background-color: #020617;
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+        .swagger-ui {
+            font-family: inherit;
+        }
+        .swagger-ui .topbar {
+            display: none !important;
+        }
+        .swagger-ui .wrapper {
+            max-width: 1200px;
+            padding: 0 1rem;
+        }
+        .swagger-ui .info {
+            margin: 20px 0 !important;
+        }
+        .swagger-ui .info .title {
+            color: #38bdf8 !important;
+            font-size: 1.75rem !important;
+            font-weight: 800 !important;
+        }
+        .swagger-ui .info p, .swagger-ui .info li, .swagger-ui .info table {
+            color: #94a3b8 !important;
+        }
+        .swagger-ui .scheme-container {
+            background: #0f172a !important;
+            box-shadow: none !important;
+            border: 1px solid #1e293b !important;
+            border-radius: 0.75rem !important;
+            padding: 12px 20px !important;
+            margin: 20px 0 !important;
+        }
+        .swagger-ui select {
+            background-color: #1e293b !important;
+            color: #f1f5f9 !important;
+            border-color: #334155 !important;
+        }
+        .swagger-ui .opblock {
+            background: rgba(15, 23, 42, 0.7) !important;
+            border: 1px solid #1e293b !important;
+            border-radius: 0.75rem !important;
+            margin-bottom: 14px !important;
+            box-shadow: none !important;
+        }
+        .swagger-ui .opblock .opblock-summary {
+            border-color: #1e293b !important;
+            padding: 10px 16px !important;
+        }
+        .swagger-ui .opblock .opblock-summary-path {
+            color: #f8fafc !important;
+            font-size: 0.95rem !important;
+            font-weight: 600 !important;
+        }
+        .swagger-ui .opblock .opblock-summary-description {
+            color: #94a3b8 !important;
+            font-size: 0.85rem !important;
+        }
+        .swagger-ui .opblock-body {
+            background: #090d16 !important;
+            border-top: 1px solid #1e293b !important;
+        }
+        .swagger-ui .opblock.opblock-post {
+            border-color: rgba(16, 185, 129, 0.4) !important;
+        }
+        .swagger-ui .opblock.opblock-get {
+            border-color: rgba(56, 189, 248, 0.4) !important;
+        }
+        .swagger-ui .opblock.opblock-delete {
+            border-color: rgba(244, 63, 94, 0.4) !important;
+        }
+        .swagger-ui .opblock-tag {
+            color: #e2e8f0 !important;
+            border-bottom: 1px solid #1e293b !important;
+            font-size: 1.1rem !important;
+            padding: 14px 0 !important;
+        }
+        .swagger-ui .opblock-tag small {
+            color: #64748b !important;
+        }
+        .swagger-ui table thead tr td, .swagger-ui table thead tr th {
+            color: #94a3b8 !important;
+            border-color: #334155 !important;
+        }
+        .swagger-ui .parameter__name {
+            color: #38bdf8 !important;
+        }
+        .swagger-ui .parameter__type {
+            color: #a855f7 !important;
+        }
+        .swagger-ui .parameter__in {
+            color: #64748b !important;
+        }
+        .swagger-ui .btn.execute {
+            background-color: #0284c7 !important;
+            border-color: #0284c7 !important;
+            color: #ffffff !important;
+            box-shadow: none !important;
+        }
+        .swagger-ui .btn.try-out__btn {
+            color: #38bdf8 !important;
+            border-color: #0284c7 !important;
+        }
+        .swagger-ui .btn.try-out__btn:hover {
+            background: rgba(2, 132, 199, 0.15) !important;
+        }
+        .swagger-ui .responses-inner {
+            background: transparent !important;
+        }
+        .swagger-ui .response-col_status {
+            color: #f1f5f9 !important;
+        }
+        .swagger-ui .response-col_description {
+            color: #cbd5e1 !important;
+        }
+        .swagger-ui section.models {
+            border: 1px solid #1e293b !important;
+            border-radius: 0.75rem !important;
+            background: #0b1120 !important;
+        }
+        .swagger-ui section.models h4 {
+            color: #cbd5e1 !important;
+        }
+        .swagger-ui .model-title {
+            color: #38bdf8 !important;
+        }
+        .swagger-ui .model {
+            color: #cbd5e1 !important;
+        }
+        .swagger-ui .prop-type {
+            color: #34d399 !important;
+        }
+        .swagger-ui input[type="text"], .swagger-ui textarea {
+            background: #0f172a !important;
+            color: #f8fafc !important;
+            border: 1px solid #334155 !important;
+            border-radius: 0.5rem !important;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 flex flex-col min-h-screen">
+
+    <!-- Top Navigation Header -->
+    <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <a href="index.html" class="flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white text-xs font-semibold transition" title="Return to AI Scam Detector Dashboard">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>App Dashboard</span>
+                </a>
+                <div class="h-5 w-px bg-slate-800 hidden sm:block"></div>
+                <div class="flex items-center space-x-2">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-600 to-indigo-600 flex items-center justify-center shadow-md">
+                        <i class="fa-solid fa-code text-white text-sm"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-sm font-bold text-white flex items-center gap-2">
+                            Interactive Swagger UI Docs
+                            <span class="text-[10px] px-2 py-0.5 rounded bg-cyan-950 text-cyan-400 border border-cyan-800 font-mono">OpenAPI 3.1</span>
+                        </h1>
+                        <p class="text-[11px] text-slate-400 hidden md:block">AI Scam Detector for Messages & Websites</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Server Status & Actions -->
+            <div class="flex items-center space-x-2 sm:space-x-3">
+                <div id="serverStatusBadge" class="px-3 py-1 rounded-full bg-slate-900 text-slate-400 border border-slate-800 text-xs font-mono flex items-center space-x-1.5" title="Python Backend Status">
+                    <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                    <span class="hidden sm:inline">Checking Backend...</span>
+                    <span class="sm:hidden">Status</span>
+                </div>
+                <a href="http://127.0.0.1:8000/docs" target="_blank" class="px-3 py-1.5 rounded-lg bg-cyan-600/20 hover:bg-cyan-600/30 border border-cyan-500/40 text-cyan-300 text-xs font-medium transition flex items-center space-x-1.5" title="Open FastAPI Native Docs">
+                    <i class="fa-solid fa-bolt"></i>
+                    <span class="hidden sm:inline">FastAPI Port 8000</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Info Banner -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 w-full">
+        <div id="backendNotice" class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs">
+            <div class="flex items-start sm:items-center space-x-2.5">
+                <i class="fa-solid fa-circle-info text-cyan-400 text-sm mt-0.5 sm:mt-0"></i>
+                <div class="text-slate-300">
+                    <span class="font-semibold text-white">Full Interactive OpenAPI Specification:</span>
+                    Browse all endpoints, Pydantic data schemas, request parameters, and response bodies below.
+                </div>
+            </div>
+            <div class="text-[11px] text-slate-400 flex items-center space-x-2 bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 font-mono">
+                <span>To execute live requests:</span>
+                <code class="text-cyan-300">.\run.bat</code>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Swagger UI Mount Point -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-2 sm:px-4 lg:px-8 py-4">
+        <div id="swagger-ui" class="bg-slate-900/60 rounded-2xl border border-slate-800 p-2 sm:p-6 shadow-xl min-h-[600px]">
+            <div class="text-center py-20 text-slate-400 space-y-3">
+                <i class="fa-solid fa-circle-notch fa-spin text-2xl text-cyan-400"></i>
+                <div class="text-xs">Initializing Swagger UI 5 and OpenAPI Schema...</div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800/80 py-4 mt-auto text-center text-xs text-slate-500">
+        AI Scam Detector for Messages & Websites • Swagger UI API Documentation
+    </footer>
+
+    <!-- Swagger UI Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-bundle.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-standalone-preset.js"></script>
+    <script src="js/openapi-spec.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check if Python backend on port 8000 is running
+            const statusBadge = document.getElementById('serverStatusBadge');
+            
+            fetch('http://127.0.0.1:8000/api/stats', { mode: 'cors' })
+                .then(res => {
+                    if (res.ok) {
+                        statusBadge.className = "px-3 py-1 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800 text-xs font-mono flex items-center space-x-1.5";
+                        statusBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span><span>FastAPI Online (:8000)</span>';
+                    } else {
+                        setOfflineStatus();
+                    }
+                })
+                .catch(() => {
+                    setOfflineStatus();
+                });
+
+            function setOfflineStatus() {
+                statusBadge.className = "px-3 py-1 rounded-full bg-slate-900 text-slate-400 border border-slate-800 text-xs font-mono flex items-center space-x-1.5";
+                statusBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-slate-500"></span><span>Backend: Offline (Run .\\run.bat)</span>';
+            }
+
+            // Initialize Swagger UI with openapi-spec.js fallback
+            try {
+                const specData = (window.OPENAPI_SPEC && Object.keys(window.OPENAPI_SPEC).length > 0)
+                    ? window.OPENAPI_SPEC
+                    : undefined;
+
+                const config = {
+                    dom_id: '#swagger-ui',
+                    deepLinking: true,
+                    presets: [
+                        SwaggerUIBundle.presets.apis,
+                        SwaggerUIStandalonePreset
+                    ],
+                    layout: "StandaloneLayout"
+                };
+
+                if (specData) {
+                    config.spec = specData;
+                } else {
+                    config.url = "openapi.json";
+                }
+
+                window.ui = SwaggerUIBundle(config);
+            } catch (err) {
+                console.error("Swagger UI initialization error:", err);
+                const container = document.getElementById('swagger-ui');
+                if (container) {
+                    container.innerHTML = `
+                        <div class="p-6 text-center text-rose-400 space-y-2">
+                            <i class="fa-solid fa-triangle-exclamation text-2xl"></i>
+                            <div class="font-semibold text-sm">Failed to initialize Swagger UI</div>
+                            <div class="text-xs text-slate-400 font-mono">${err.message}</div>
+                        </div>
+                    `;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
