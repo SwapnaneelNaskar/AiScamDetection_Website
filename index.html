@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Scam Detector for Messages & Websites — CyberShield AI</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome 6 Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Tesseract.js CDN (Client-side WebAssembly OCR) -->
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-cyan-500 selection:text-white">
+
+    <!-- Top Navigation Header -->
+    <header class="border-b border-slate-800/80 bg-slate-900/60 backdrop-blur sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-cyan-500/20">
+                    <i class="fa-solid fa-shield-virus text-xl text-white"></i>
+                </div>
+                <div>
+                    <h1 class="text-base sm:text-lg font-bold tracking-tight text-white flex items-center gap-2">
+                        AI Scam Detector
+                        <span class="text-[10px] px-2 py-0.5 rounded bg-cyan-950 text-cyan-400 border border-cyan-800 font-mono">ACTIVE SYSTEM</span>
+                    </h1>
+                    <p class="text-xs text-slate-400 hidden sm:block">Multi-Signal Intelligence: NLP, Technical URL Inspection & Screenshot OCR</p>
+                </div>
+            </div>
+
+            <!-- Header Action Buttons -->
+            <div class="flex items-center space-x-2 sm:space-x-3">
+                <button id="vivaModalBtn" class="px-3 py-1.5 rounded-lg bg-indigo-600/20 hover:bg-indigo-600/30 border border-indigo-500/40 text-indigo-300 text-xs font-medium transition flex items-center space-x-2">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span class="hidden md:inline">Architecture &</span> ML Metrics
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+        <!-- Top Statistics Cards -->
+        <section class="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div class="glass-panel p-4 rounded-xl border border-slate-800 flex items-center space-x-3">
+                <div class="w-9 h-9 rounded-lg bg-cyan-950/80 border border-cyan-800 text-cyan-400 flex items-center justify-center">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+                <div>
+                    <div class="text-[11px] text-slate-400 uppercase font-semibold">Total Scanned</div>
+                    <div id="statTotalScans" class="text-lg font-bold text-white font-mono">0</div>
+                </div>
+            </div>
+            <div class="glass-panel p-4 rounded-xl border border-slate-800 flex items-center space-x-3">
+                <div class="w-9 h-9 rounded-lg bg-rose-950/80 border border-rose-800 text-rose-400 flex items-center justify-center">
+                    <i class="fa-solid fa-ban"></i>
+                </div>
+                <div>
+                    <div class="text-[11px] text-slate-400 uppercase font-semibold">Threats Flagged</div>
+                    <div id="statScamsBlocked" class="text-lg font-bold text-rose-400 font-mono">0</div>
+                </div>
+            </div>
+            <div class="glass-panel p-4 rounded-xl border border-slate-800 flex items-center space-x-3">
+                <div class="w-9 h-9 rounded-lg bg-amber-950/80 border border-amber-800 text-amber-400 flex items-center justify-center">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+                <div>
+                    <div class="text-[11px] text-slate-400 uppercase font-semibold">Avg Risk Score</div>
+                    <div id="statAvgScore" class="text-lg font-bold text-amber-400 font-mono">0/100</div>
+                </div>
+            </div>
+            <div class="glass-panel p-4 rounded-xl border border-slate-800 flex items-center space-x-3">
+                <div class="w-9 h-9 rounded-lg bg-emerald-950/80 border border-emerald-800 text-emerald-400 flex items-center justify-center">
+                    <i class="fa-solid fa-microchip"></i>
+                </div>
+                <div>
+                    <div class="text-[11px] text-slate-400 uppercase font-semibold">Active AI Engine</div>
+                    <div class="text-xs font-bold text-emerald-400 font-mono">TF-IDF + LogReg</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Two Column Main Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+            <!-- LEFT COLUMN: Input Form & Test Presets (5 Cols) -->
+            <div class="lg:col-span-5 space-y-6">
+
+                <!-- Input Panel -->
+                <div class="glass-panel rounded-2xl p-5 border border-slate-800 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Input Modality</span>
+                        <span id="charCount" class="text-[11px] font-mono text-slate-400">0 chars • 0 words</span>
+                    </div>
+
+                    <!-- Input Tabs -->
+                    <div class="grid grid-cols-3 gap-1.5 p-1 rounded-xl bg-slate-900/90 border border-slate-800">
+                        <button class="tab-btn active px-3 py-2 rounded-lg text-xs font-medium text-slate-400 transition flex items-center justify-center space-x-1.5" data-tab="message">
+                            <i class="fa-solid fa-comment-dots text-xs"></i>
+                            <span>Message</span>
+                        </button>
+                        <button class="tab-btn px-3 py-2 rounded-lg text-xs font-medium text-slate-400 transition flex items-center justify-center space-x-1.5" data-tab="url">
+                            <i class="fa-solid fa-globe text-xs"></i>
+                            <span>Website</span>
+                        </button>
+                        <button class="tab-btn px-3 py-2 rounded-lg text-xs font-medium text-slate-400 transition flex items-center justify-center space-x-1.5" data-tab="screenshot">
+                            <i class="fa-solid fa-camera text-xs"></i>
+                            <span>Screenshot</span>
+                        </button>
+                    </div>
+
+                    <!-- TAB 1: Message Text Input -->
+                    <div id="tab-message" class="space-y-2">
+                        <label class="block text-xs font-medium text-slate-300">Message Content (SMS, Email, Chat, WhatsApp)</label>
+                        <textarea id="messageInput" rows="6" class="w-full bg-slate-900/80 border border-slate-700/80 rounded-xl p-3 text-xs sm:text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition resize-none" placeholder="Paste the suspicious message here... e.g., 'URGENT! Your account will be blocked. Verify immediately at http://...'"></textarea>
+                    </div>
+
+                    <!-- TAB 2: Website / URL Input -->
+                    <div id="tab-url" class="space-y-2 hidden">
+                        <label class="block text-xs font-medium text-slate-300">Target Website Link (URL)</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-link absolute left-3.5 top-3.5 text-slate-500 text-xs"></i>
+                            <input id="urlInput" type="text" class="w-full bg-slate-900/80 border border-slate-700/80 rounded-xl py-2.5 pl-9 pr-3 text-xs sm:text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition" placeholder="https://example-secure-login.xyz/verify">
+                        </div>
+                        <p class="text-[11px] text-slate-500">Deep structural scan evaluates domain entropy, numeric IP hostnames, TLD risk, and typosquatting.</p>
+                    </div>
+
+                    <!-- TAB 3: Screenshot & Photo OCR Input (Multiple Photos Supported) -->
+                    <div id="tab-screenshot" class="space-y-3 hidden">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-xs font-medium text-slate-300">Upload Screenshots & Photos (SMS / Chat / Email)</label>
+                            <span class="text-[10px] px-2 py-0.5 rounded bg-cyan-950 text-cyan-400 border border-cyan-800 font-mono">MULTI-PHOTO</span>
+                        </div>
+                        <label for="screenshotFileInput" id="ocrDropzone" class="block border-2 border-dashed border-slate-700 hover:border-cyan-500/60 rounded-xl p-5 text-center cursor-pointer transition bg-slate-900/40 hover:bg-slate-900/60">
+                            <input type="file" id="screenshotFileInput" class="hidden" accept="image/*" multiple>
+                            <div class="space-y-2 pointer-events-none">
+                                <i class="fa-solid fa-images text-3xl text-cyan-400"></i>
+                                <div class="text-xs text-slate-200 font-semibold">Click to upload or drag & drop one or multiple photos</div>
+                                <div class="text-[10px] text-slate-400">PNG, JPG, WebP supported • Add multiple screenshots anytime • Fast OCR</div>
+                                <div class="pt-1">
+                                    <span id="browseImageBtn" class="px-3.5 py-1.5 rounded-lg bg-cyan-600/30 hover:bg-cyan-600/50 border border-cyan-500/50 text-cyan-300 text-xs font-semibold inline-flex items-center space-x-1.5 transition">
+                                        <i class="fa-solid fa-folder-open"></i>
+                                        <span>Choose Photo(s)</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </label>
+
+                        <!-- Progress Bar & Status -->
+                        <div id="ocrProgress" class="space-y-1.5 hidden">
+                            <div class="flex items-center justify-between text-[11px]">
+                                <span id="ocrStatus" class="text-cyan-400 font-mono">Recognizing text...</span>
+                            </div>
+                            <div class="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                                <div id="ocrProgressBar" class="bg-cyan-500 h-1.5 transition-all duration-300" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Multiple Images Preview Gallery Container -->
+                        <div id="imagePreviewContainer" class="hidden space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[11px] font-semibold text-slate-300 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-images text-cyan-400"></i>
+                                    Uploaded Photos (<span id="photoCount" class="font-mono text-cyan-400 font-bold">0</span>)
+                                    <span class="text-[10px] text-slate-400 font-normal hidden sm:inline">— Click &times; to remove any photo</span>
+                                </span>
+                                <button type="button" id="clearAllPhotosBtn" class="text-[10px] text-rose-400 hover:text-rose-300 transition flex items-center gap-1">
+                                    <i class="fa-solid fa-trash-can text-[10px]"></i> Remove All
+                                </button>
+                            </div>
+                            <div id="photoGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 max-h-60 overflow-y-auto p-2 rounded-xl bg-slate-950/60 border border-slate-800/80">
+                                <!-- Populated dynamically with photo cards & cross close buttons -->
+                            </div>
+                        </div>
+
+                        <!-- OCR Extracted Text Review Box -->
+                        <div id="ocrResultBox" class="space-y-1 hidden">
+                            <div class="flex items-center justify-between">
+                                <label class="block text-[11px] font-semibold text-slate-400 uppercase">Extracted Text (Review & Edit):</label>
+                                <span class="text-[10px] text-slate-500">Combined from uploaded photos</span>
+                            </div>
+                            <textarea id="ocrExtractedText" rows="4" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl p-2.5 text-xs text-slate-200 focus:outline-none focus:border-cyan-500 font-mono resize-none" placeholder="Extracted text from photos will appear here. You can also edit it before analyzing."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex space-x-2 pt-1">
+                        <button id="analyzeBtn" class="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-cyan-600 to-indigo-600 hover:from-cyan-500 hover:to-indigo-500 text-white text-xs sm:text-sm font-bold shadow-lg shadow-cyan-600/20 transition flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-radar"></i>
+                            <span>Analyze for Scams</span>
+                        </button>
+                        <button id="clearBtn" class="px-4 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-slate-200 text-xs transition" title="Clear Inputs">
+                            <i class="fa-solid fa-arrow-rotate-left"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 1-Click Realistic Test Presets -->
+                <div class="glass-panel rounded-2xl p-5 border border-slate-800 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                            <i class="fa-solid fa-flask-vial text-cyan-400"></i>
+                            Threat Scenario Presets
+                        </span>
+                        <span class="text-[10px] text-slate-500">1-Click Test</span>
+                    </div>
+                    <p class="text-[11px] text-slate-400">Click any preset below to automatically load and evaluate real-world threat vectors:</p>
+                    <div id="presetsList" class="space-y-2 max-h-80 overflow-y-auto pr-1">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT COLUMN: Interactive Threat Intelligence Results (7 Cols) -->
+            <div class="lg:col-span-7 space-y-6">
+
+                <!-- Empty State Placeholder -->
+                <div id="emptyState" class="glass-panel rounded-2xl p-12 border border-slate-800 text-center flex flex-col items-center justify-center min-h-[460px] space-y-4">
+                    <div class="w-16 h-16 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-600">
+                        <i class="fa-solid fa-shield-halved text-3xl"></i>
+                    </div>
+                    <div class="max-w-md space-y-1">
+                        <h3 class="text-base font-semibold text-slate-300">Ready to Analyze Content</h3>
+                        <p class="text-xs text-slate-500">Enter a suspicious message, link, or upload an image. The system will fuse NLP patterns, ML predictions, and URL characteristics to calculate an explainable risk score.</p>
+                    </div>
+                    <div class="flex flex-wrap gap-2 justify-center pt-2">
+                        <span class="text-[11px] px-2.5 py-1 rounded-full bg-slate-900 text-slate-400 border border-slate-800">Urgency Detection</span>
+                        <span class="text-[11px] px-2.5 py-1 rounded-full bg-slate-900 text-slate-400 border border-slate-800">Entropy Analysis</span>
+                        <span class="text-[11px] px-2.5 py-1 rounded-full bg-slate-900 text-slate-400 border border-slate-800">Phishing Heuristics</span>
+                        <span class="text-[11px] px-2.5 py-1 rounded-full bg-slate-900 text-slate-400 border border-slate-800">OCR Extraction</span>
+                    </div>
+                </div>
+
+                <!-- Analysis Results Container (Initially Hidden) -->
+                <div id="resultsState" class="space-y-6 hidden">
+
+                    <!-- Score Card & Threat Gauge -->
+                    <div class="glass-panel rounded-2xl p-6 border border-slate-800 space-y-5">
+                        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pb-4 border-b border-slate-800">
+                            <!-- Gauge & Number -->
+                            <div class="flex items-center space-x-5">
+                                <div class="relative w-28 h-28 flex items-center justify-center">
+                                    <svg class="w-28 h-28">
+                                        <!-- Background Circle -->
+                                        <circle cx="56" cy="56" r="52" stroke="currentColor" stroke-width="8" class="text-slate-800/80 fill-none" />
+                                        <!-- Animated Gauge Circle -->
+                                        <circle id="gaugeCircle" cx="56" cy="56" r="52" stroke="#10b981" stroke-width="8" stroke-dasharray="326.7" stroke-dashoffset="326.7" stroke-linecap="round" class="gauge-circle fill-none" />
+                                    </svg>
+                                    <div class="absolute inset-0 flex flex-col items-center justify-center">
+                                        <span id="scoreValue" class="text-2xl font-black font-mono text-white leading-none">0</span>
+                                        <span class="text-[10px] uppercase font-bold text-slate-400 mt-0.5">/ 100</span>
+                                    </div>
+                                </div>
+                                <div class="space-y-1">
+                                    <div id="riskLevelBadge" class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-950 text-emerald-300 border border-emerald-800">
+                                        LOW RISK
+                                    </div>
+                                    <div id="categoryBadge" class="text-xs font-semibold text-slate-300 flex items-center">
+                                        <i class="fa-solid fa-tag mr-1.5 text-cyan-400"></i> Legitimate
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ML Model Confidence Info -->
+                            <div class="glass-card p-3 rounded-xl border border-slate-700/60 text-right w-full sm:w-auto space-y-1">
+                                <div class="text-[10px] text-slate-400 uppercase font-semibold">AI Scam Probability</div>
+                                <div id="mlProbText" class="text-lg font-bold text-cyan-400 font-mono">0%</div>
+                                <div id="mlConfText" class="text-[10px] text-slate-400">Confidence Label</div>
+                            </div>
+                        </div>
+
+                        <!-- Summary Explanation -->
+                        <div class="space-y-2">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                                <i class="fa-solid fa-circle-info text-cyan-400"></i> Executive Threat Summary
+                            </h4>
+                            <p id="summaryExplanation" class="text-xs text-slate-300 leading-relaxed bg-slate-900/60 p-3 rounded-xl border border-slate-800/80 font-mono"></p>
+                        </div>
+                    </div>
+
+                    <!-- Warning Signs & Detected Indicators -->
+                    <div class="glass-panel rounded-2xl p-6 border border-slate-800 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                                <i class="fa-solid fa-triangle-exclamation text-amber-400"></i>
+                                Detected Warning Signs & Evidence
+                            </h4>
+                            <span class="text-[11px] text-slate-500">Explainable NLP</span>
+                        </div>
+                        <div id="indicatorsList" class="space-y-2.5">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Technical URL Analysis Section -->
+                    <div id="urlAnalysisSection" class="glass-panel rounded-2xl p-6 border border-slate-800 space-y-4 hidden">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                            <i class="fa-solid fa-network-wired text-cyan-400"></i>
+                            Technical URL Structural Inspection
+                        </h4>
+                        
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                            <div class="glass-card p-2.5 rounded-lg border border-slate-800">
+                                <div class="text-[10px] text-slate-400 uppercase">Domain Host</div>
+                                <div id="urlDomainVal" class="text-xs font-mono font-semibold text-white truncate">example.com</div>
+                            </div>
+                            <div class="glass-card p-2.5 rounded-lg border border-slate-800">
+                                <div class="text-[10px] text-slate-400 uppercase">Protocol</div>
+                                <div id="urlProtocolVal" class="text-xs font-mono font-semibold text-emerald-400">HTTPS</div>
+                            </div>
+                            <div class="glass-card p-2.5 rounded-lg border border-slate-800">
+                                <div class="text-[10px] text-slate-400 uppercase">Numeric IP Host</div>
+                                <div id="urlIpVal" class="text-xs font-mono font-semibold text-slate-300">NO</div>
+                            </div>
+                            <div class="glass-card p-2.5 rounded-lg border border-slate-800">
+                                <div class="text-[10px] text-slate-400 uppercase">TLD Evaluation</div>
+                                <div id="urlTldVal" class="text-xs font-mono font-semibold text-slate-300">.com</div>
+                            </div>
+                            <div class="glass-card p-2.5 rounded-lg border border-slate-800">
+                                <div class="text-[10px] text-slate-400 uppercase">Domain Entropy</div>
+                                <div id="urlEntropyVal" class="text-xs font-mono font-semibold text-cyan-400">2.4 bits</div>
+                            </div>
+                            <div class="glass-card p-2.5 rounded-lg border border-slate-800">
+                                <div class="text-[10px] text-slate-400 uppercase">Status</div>
+                                <div class="text-xs font-mono font-semibold text-cyan-400">Inspected</div>
+                            </div>
+                        </div>
+
+                        <!-- Important HTTPS caveat note -->
+                        <div id="urlHttpsNotice" class="text-[11px] text-slate-400 p-2.5 rounded-lg bg-slate-900/60 border border-slate-800"></div>
+
+                        <!-- Flags List -->
+                        <div class="space-y-1.5">
+                            <div class="text-[11px] font-semibold text-slate-400 uppercase">URL Security Flags:</div>
+                            <ul id="urlFlagsList" class="space-y-1"></ul>
+                        </div>
+                    </div>
+
+                    <!-- Safety Recommendations -->
+                    <div class="glass-panel rounded-2xl p-6 border border-slate-800 space-y-3">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                            <i class="fa-solid fa-user-shield text-emerald-400"></i>
+                            Actionable Safety Recommendations
+                        </h4>
+                        <ul id="recommendationsList" class="space-y-2">
+                            <!-- Populated by JavaScript -->
+                        </ul>
+                    </div>
+
+                    <!-- Academic Formula Breakdown -->
+                    <div class="glass-card p-4 rounded-xl border border-slate-800/80 text-[11px] text-slate-400 space-y-1">
+                        <div class="font-semibold text-slate-300 flex items-center gap-1">
+                            <i class="fa-solid fa-calculator text-cyan-400"></i> Multi-Signal AI Risk Computation:
+                        </div>
+                        <div id="vivaBreakdownText" class="font-mono text-cyan-300/90"></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Scan History Table -->
+        <section class="glass-panel rounded-2xl p-6 border border-slate-800 space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                    <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-clock-rotate-left text-cyan-400"></i>
+                        Recent Analysis History (SQLite)
+                    </h3>
+                    <p class="text-xs text-slate-500">Persistent log of scanned messages, URLs, and OCR screenshot records.</p>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <button id="refreshHistoryBtn" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs transition flex items-center space-x-1" title="Refresh History">
+                        <i class="fa-solid fa-arrows-rotate"></i>
+                        <span>Refresh</span>
+                    </button>
+                    <button id="clearHistoryBtn" class="px-3 py-1.5 rounded-lg bg-rose-950/40 hover:bg-rose-900/60 border border-rose-800/60 text-rose-300 text-xs transition flex items-center space-x-1">
+                        <i class="fa-solid fa-trash-can text-[10px]"></i>
+                        <span>Clear All</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- History Table -->
+            <div class="overflow-x-auto rounded-xl border border-slate-800">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-900/90 text-[11px] font-bold text-slate-400 uppercase tracking-wider border-b border-slate-800">
+                            <th class="p-3">ID</th>
+                            <th class="p-3">Timestamp</th>
+                            <th class="p-3">Type</th>
+                            <th class="p-3">Content Snippet</th>
+                            <th class="p-3">Risk Assessment</th>
+                            <th class="p-3">Category</th>
+                            <th class="p-3 text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyTableBody">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Academic Viva Voce & ML Benchmark Modal -->
+    <div id="vivaModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop hidden">
+        <div id="modalBackdrop" class="absolute inset-0"></div>
+        <div class="relative glass-panel rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 border border-slate-700 space-y-6 shadow-2xl">
+            
+            <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-600/30 border border-indigo-500/40 text-indigo-400 flex items-center justify-center">
+                        <i class="fa-solid fa-chart-pie text-xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-bold text-white">AI Scam Detector — Model Benchmarks & Intelligence</h2>
+                        <p class="text-xs text-slate-400">Scikit-Learn Multi-Model Benchmark & Threat Detection Architecture</p>
+                    </div>
+                </div>
+                <button id="closeModalBtn" class="text-slate-400 hover:text-white p-2 text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Benchmark Table -->
+            <div class="space-y-3">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-2">
+                    <i class="fa-solid fa-table-list"></i>
+                    Machine Learning Model Comparison (Section 7)
+                </h3>
+                <div class="overflow-x-auto rounded-xl border border-slate-800">
+                    <table class="w-full text-left text-xs">
+                        <thead>
+                            <tr class="bg-slate-900 text-slate-400 uppercase font-semibold border-b border-slate-800">
+                                <th class="p-3">Algorithm</th>
+                                <th class="p-3">Accuracy</th>
+                                <th class="p-3">Precision</th>
+                                <th class="p-3">Recall</th>
+                                <th class="p-3">F1-Score</th>
+                            </tr>
+                        </thead>
+                        <tbody id="metricsTableBody">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Chart.js Graph & Confusion Matrix -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+                <div class="md:col-span-7 glass-card p-4 rounded-xl border border-slate-800 h-64">
+                    <div class="text-[11px] font-bold text-slate-400 uppercase mb-2">Evaluation Metrics Visualization</div>
+                    <div class="h-52 relative">
+                        <canvas id="modelMetricsChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="md:col-span-5 glass-card p-4 rounded-xl border border-slate-800 space-y-3">
+                    <div class="text-[11px] font-bold text-slate-400 uppercase">Confusion Matrix (Test Set)</div>
+                    <div class="grid grid-cols-2 gap-2 text-center text-xs">
+                        <div class="p-2.5 rounded-lg bg-emerald-950/40 border border-emerald-800/60">
+                            <div class="text-[10px] text-slate-400">True Negative</div>
+                            <div id="cmTN" class="text-lg font-bold text-emerald-400 font-mono">0</div>
+                            <div class="text-[9px] text-slate-500">Legit as Legit</div>
+                        </div>
+                        <div class="p-2.5 rounded-lg bg-amber-950/40 border border-amber-800/60">
+                            <div class="text-[10px] text-slate-400">False Positive</div>
+                            <div id="cmFP" class="text-lg font-bold text-amber-400 font-mono">0</div>
+                            <div class="text-[9px] text-slate-500">Legit as Scam</div>
+                        </div>
+                        <div class="p-2.5 rounded-lg bg-rose-950/40 border border-rose-800/60">
+                            <div class="text-[10px] text-slate-400">False Negative</div>
+                            <div id="cmFN" class="text-lg font-bold text-rose-400 font-mono">0</div>
+                            <div class="text-[9px] text-slate-500">Scam Missed</div>
+                        </div>
+                        <div class="p-2.5 rounded-lg bg-cyan-950/40 border border-cyan-800/60">
+                            <div class="text-[10px] text-slate-400">True Positive</div>
+                            <div id="cmTP" class="text-lg font-bold text-cyan-400 font-mono">0</div>
+                            <div class="text-[9px] text-slate-500">Scam Flagged</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Architecture Q&A Reference -->
+            <div class="space-y-4 pt-2">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-2">
+                    <i class="fa-solid fa-comments"></i>
+                    AI Scam Detector Technical & Architectural Overview
+                </h3>
+                
+                <div class="space-y-3 text-xs">
+                    <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
+                        <div class="font-semibold text-slate-200">Q: What is the core definition of AI Scam Detector?</div>
+                        <div class="text-slate-400 leading-relaxed">
+                            "An AI-powered safety assistant that analyzes messages, website URLs, and screenshots to detect potential scams, explain warning signs, and guide users toward safer actions."
+                        </div>
+                    </div>
+
+                    <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
+                        <div class="font-semibold text-slate-200">Q: Where is AI used in the architecture?</div>
+                        <div class="text-slate-400 leading-relaxed">
+                            "AI is used in the NLP and machine-learning component (TF-IDF vectorizer + Logistic Regression, Naive Bayes, Linear SVM) to learn statistical n-gram patterns from labeled scam and legitimate corpora, combined with an explainable rule engine and URL entropy analyzer."
+                        </div>
+                    </div>
+
+                    <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
+                        <div class="font-semibold text-slate-200">Q: What makes this project different from a standard spam filter?</div>
+                        <div class="text-slate-400 leading-relaxed">
+                            "A basic spam detector only performs binary classification (Spam/Not Spam). This project combines multi-modal input (text, URLs, and OCR screenshots), explains specific warning signs (urgency, credential harvesting, TLD abuse, brand spoofing), categorizes the scam into 7 threat classes, and delivers actionable safety recommendations."
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800/80 py-4 mt-auto text-center text-xs text-slate-500">
+        AI Scam Detector for Messages & Websites • Real-Time AI Threat Intelligence & Detection
+    </footer>
+
+    <!-- App Scripts -->
+    <script src="js/ocr.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
